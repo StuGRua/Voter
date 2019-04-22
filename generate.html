@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style>
+        .clear-padding {
+            padding: 0;
+        }
+
+        legend {
+            border: 0;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+        }
+
+        .text-p {
+            text-indent: 2em;
+            text-align: left;
+        }
+    </style>
+
+    <script>
+        function slc_vote(temp) //访问兄弟节点实现
+        {
+            if (temp.nextElementSibling.value==0) 
+            {
+                temp.value="选中";
+                temp.className="btn btn-warning"
+                temp.nextElementSibling.value=1;
+            }
+            else 
+            {
+                temp.value="选择";
+                temp.className="btn btn-success"
+                temp.nextElementSibling.value=0;
+                
+            }
+            console.log(temp.nextElementSibling.value);
+        }
+        
+        
+        function post_package() 
+        {
+            var sheet;
+            for (let temp_con = 0; temp_con < {{length}}; temp_con++) 
+            {
+                let temp_temp=document.getElementById("cond_"+temp_con).value;
+                
+                sheet+= [
+                            { "Name":temp_con , "value":Boolean(temp_temp)}
+                        ];
+                
+            }
+            $.post("/posted?id={{tablename}}&length={{length}}", sheet);//传送门
+        }
+
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });//提示框(暂时没用)
+    </script>
+    {% if empty == 1 %}
+        <script>alert("请至少投一票");</script>
+    {% endif %}
+    {% if captcha == 0 %}
+        <script>alert("验证码错误");</script>
+    {% endif %}
+</head>
+
+<body><!--
+minvote is {{minvote}} max vote is{{maxvote}}
+-->
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1>{{title}}<br>--{{subtitle}}</h1>
+        </div>
+
+        <form action="/posted?id={{tablename}}&length={{length}}"  method="post"><!--POST在这里-->
+		{% for i in range(0,length) %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center panel panel-info">
+                <div id="legend" class="col-md-12 panel-heading">
+                    <!--编号和选手名字在这里-->
+                    <legend class="text-center panel-title">{{i+1}}.<strong>{{candidates[i]}}    已有{{votes[i]}}票</strong></legend>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 panel-body clear-padding">
+                    <div class="col-md-12">
+                        <!---在下就是PIC-->
+                        <img class="img-responsive center-block" alt="Cinque Terre"
+                            src="\static/upload_pic/{{title}}/{{i+1}}.png">
+                    </div>
+                    <div class="col-md-12 text-center height clear-padding border-bottom">
+                        <!--文本在这里-->
+                        <p class="text-p">
+                            {{details[i]}}
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="padding:10px;">
+                        <div class="controls">
+                            <input type="button" id="slc_{{i+1}}" value="选择" class="btn btn-success"
+                                onclick="slc_vote(this);" type="button">
+                            <!--传值value在下面这行-->
+                            <input type="text" style="display:none;" name="cond_{{i+1}}" value="0" id="cond_{{i+1}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+			<!--
+            <input type="text" name="ip" value="<?php echo $ip?>" style="display:none">
+            -->
+            {% endfor %}
+            <input type="text" name="image"><img src="/validator/1">
+            <button onclick="post_package" type="submit" class="btn btn-primary">提交</button>
+            <a class="btn btn-info center-block" href="/choose_vote" role="button">返回</a>
+            
+
+
+        </form>
+
+
+
+    </div> <!-- /container -->
+
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

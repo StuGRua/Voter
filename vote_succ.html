@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>投票成功</title>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        
+        <div class="container">
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% if timeout != 1 and notyet != 1 and voted !=1 %}
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    
+                    <!--<img src="https://s2.ax1x.com/2019/03/30/AB6FxA.png" class="img-responsive center-block img-rounded" alt="Cinque Terre">
+                    -->
+                    <div class="well well-lg">
+                        <p class="text-success lead text-center" >投票成功！</p>
+                    </div>
+                    
+                    
+                </div>
+				{% endif %}
+				{% if timeout == 1 %}
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    
+                    <!--<img src="https://s2.ax1x.com/2019/03/30/AB6FxA.png" class="img-responsive center-block img-rounded" alt="Cinque Terre">
+                    -->
+                    <div class="well well-lg">
+                        <p class="text-success lead text-center" >当前投票已终止!</p>
+                    </div>
+                    
+                    
+                </div>
+                {% endif %}
+                {% if notyet == 1 %}
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    
+                    <!--<img src="https://s2.ax1x.com/2019/03/30/AB6FxA.png" class="img-responsive center-block img-rounded" alt="Cinque Terre">
+                    -->
+                    <div class="well well-lg">
+                        <p class="text-success lead text-center" >当前投票未开始!</p>
+                    </div>
+                    
+                    
+                </div>
+                {% endif %}
+                {% if voted == 1 %}
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    
+                    <!--<img src="https://s2.ax1x.com/2019/03/30/AB6FxA.png" class="img-responsive center-block img-rounded" alt="Cinque Terre">
+                    -->
+                    <div class="well well-lg">
+                        <p class="text-success lead text-center" >您已投过票！</p>
+                    </div>
+                    
+                    
+                </div>
+                {% endif %}
+            </div>
+            <p>当前票数：</p>
+            {% for i in range(0,length) %}
+            <div>
+                <p><strong>{{candidates[i]}}</strong> : <strong>{{votes[i]}}</strong></p>
+            </div>
+            {% endfor %}
+            
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+                <!--<a class="btn btn-info center-block" href="/choose_vote" role="button">返回</a>-->
+                <a class="btn btn-info center-block" href="javascript:window.opener=null;window.open('','_self');window.close();" role="button">关闭(在手机上并不管用)</a><br>
+            <a class="btn btn-info center-block" href="/sjoke" role="button">苏联笑话生成器</a>
+            </div>
+
+        </div>
+        
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </body>
+</html>
